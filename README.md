@@ -249,6 +249,15 @@ This app has **no backend**. There is no server, REST API, or database to set up
 
 ---
 
+Architecture
+State Management — GetX
+GetX was chosen for state management due to its simplicity and minimal boilerplate. All controllers extend GetxController and are registered globally in main.dart via Get.put(). Observable variables (.obs) are used for reactive UI updates, and Obx() widgets rebuild automatically when the observed values change. AuthController is intentionally initialized first so that role and team values are available to TaskController and VisitController when they load their data.
+
+Data Layer — Hive
+Hive is used as the local storage solution. It was chosen over SQLite for its speed, simplicity, and no need for a schema or ORM. A single HiveService class exposes the open boxes as static getters, keeping storage access clean and centralized. All models are serialized to plain maps before saving and deserialized back on load. Seed data is written to Hive on first launch so the app never opens to an empty state.
+
+---
+
 ## Assumptions
 
 - **Authentication is simulated** — there is no real auth system. Login is validated against a hardcoded map of demo users in `AuthController`. Passwords are stored in plain text in the source code for demo purposes only.
